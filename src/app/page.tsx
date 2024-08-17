@@ -1,113 +1,176 @@
+"use client";
+import { useState } from 'react';
 import Image from "next/image";
+import Container from '@mui/material/Container/Container';
+import * as React from 'react';
+import Modal from '@mui/material/Modal';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
+import Button from '@mui/material/Button';
+import { useMemo } from 'react';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import LetterGroup from './letra';
+import Card from './card';
+import createNamesByFirstLetter from './create';
+interface MyObject {
+  [key: string]: any; // This allows any string to be used as a key, and the value can be of any type.
+}
+
+const clients:MyObject = {
+  "ACCIÓN FIDUCIARIA": "ECHO_NEXUS",
+  "ALIANZA FIDUCIARIA": "ECHO_NEXUS",
+  "ALKOSTO": "ECHO_NEXUS",
+  "ATH": "ATH",
+  "BANCO W": "EQUIPO CALI",
+  "BOSI": "ECHO_NEXUS",
+  "BTG BD": "SYNERGY",
+  "BTG CLOUD_PODS": "SYNERGY",
+  "CADENA": "GRYFFINDOR",
+  "CARDIO INFANTIL": "ECHO_NEXUS",
+  "CELSIA": "EQUIPO CALI",
+  "CLINICA VIDA": "GRYFFINDOR",
+  "COEXITO": "EQUIPO CALI",
+  "COMERCIAL CARD": "GRYFFINDOR",
+  "COMFENALCO": "GRYFFINDOR",
+  "CORONA": "GRYFFINDOR",
+  "CORREDORES ASOCIADOS": "ECHO_NEXUS",
+  "D1": "ECHO_NEXUS",
+  "DISLICORES": "GRYFFINDOR",
+  "DR SURA APP": "UNIO",
+  "DR SURA BD": "GRYFFINDOR",
+  "DR SURA SO": "GRYFFINDOR",
+  "EL COLOMBIANO": "GRYFFINDOR",
+  "EMI": "ECHO_NEXUS",
+  "ENLACE EMPRESARIAL": "EQUIPO CALI",
+  "ENLACE OPERATIVO": "GRYFFINDOR",
+  "FIDUPOPULAR": "ECHO_NEXUS",
+  "GEO SURA": "GRYFFINDOR",
+  "HOMI": "ECHO_NEXUS",
+  "HOSPITAL PABLO TOBON U": "ECHO_NEXUS",
+  "LA RIVERA": "ECHO_NEXUS",
+  "LA SOBERANA": "ECHO_NEXUS",
+  "LEGUIS": "ECHO_NEXUS",
+  "LINEA DIRECTA": "GRYFFINDOR",
+  "MATRIX": "ECHO_NEXUS",
+  "METRO": "ECHO_NEXUS",
+  "MUTUAL SER": "EQUIPO CALI",
+  "NOVAVENTA": "ECHO_NEXUS",
+  "NUTRESA": "GRYFFINDOR",
+  "OPENQUAKE": "GRYFFINDOR",
+  "PROTECCIÓN": "ECHO_NEXUS",
+  "SETI INTERNO": "GRYFFINDOR",
+  "SURA IM MÉXICO": "EQUIPO CALI",
+  "TCC": "GRYFFINDOR",
+  "XM BD": "GRYFFINDOR",
+  "XM SO": "GRYFFINDOR",
+  "ZONA FRANCA": "ECHO_NEXUS"
+};
 
 export default function Home() {
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeCard, setActiveCard] = useState({ name: '' });
+
+  const handleCardClick = (name:any) => {
+    setActiveCard({ name });
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+  
+  const clientsByLetter = useMemo(
+    () => createNamesByFirstLetter(Object.keys(clients)),
+    [clients]
+  );
+  const Clock = () => {
+    const d = new Date();
+    const [currentTime, setCurrentTime] = React.useState('');
+
+    React.useEffect(() => {
+        const date = d.getHours() + ' : ' + d.getMinutes() + ' : ' + d.getSeconds();
+        const timer = setInterval(() => {
+            setCurrentTime(date);
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, [currentTime]);
+
+    return <>{currentTime}</>;
+};
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
+    
+    <main className="flex min-h-screen flex-col items-center flex-col p-24">
+      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
+        <p className="fixed left-0 top-0 flex w-full justify-center  backdrop-blur-2xl  lg:static lg:w-auto  lg:rounded-xl pb-10 pt-10">
+        <Image
+              src="/image.svg"
+              alt="Opera"
+              width={70}
               height={24}
               priority
             />
-          </a>
-        </div>
+
+        </p>
+        <p className="fixed right-0 top-0 flex w-full justify-left border-b border-white-600 bg-gradient-to-b from-red-200 pb-6 pt-8 backdrop-blur-2xl dark:border-white-800 dark:white-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30 pb-10"style={{ backgroundColor: 'rgb(230, 84, 84)', color: 'white'}}>
+        <Clock/>
+        <br/>
+        </p>
+        
       </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
+      <Container maxWidth="lg"sx={{ height: '500px', overflowY: 'auto' }}  >
+      <List sx={{ '> * + *': { marginTop: '4  px' } }}>
+        {Object.keys(clientsByLetter).map((letter) => (
+          <ListItem key={letter}>
+            <LetterGroup letter={letter}>
+              {clientsByLetter[letter].map((name: React.Key) => (
+                <Card
+                  key={name}
+                  name={name}
+                  to={"sip:3197399411"}
+                  onClick={() => handleCardClick(clients[name.toString()])}
+              
+                  
+                />
+              ))}
+            </LetterGroup>
+          </ListItem>
+        ))}
+      </List>
+    </Container>
+    <Modal
+        open={isModalOpen}
+        onClose={handleCloseModal}
+        sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      >
+        <Box sx={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px' }}>
+          <Typography variant="h6" component="h2">
+            {activeCard.name}
+          </Typography>
+          <div className="flex justify-end">
+          <Typography sx={{ mt: 2 ,color:"black"}}align="right">
+            El disponible N1 es
+            <br></br>   &nbsp;
+            Luis Sanabria
+            <br></br>   &nbsp;
+            Telefono: 3185934757
+            <br></br>   &nbsp;
+          </Typography>
+          </div>
+          <div className="flex justify-end">
+          <p className="inline-flex left-0 top-0 flex justify-left border-b border-white-600 bg-gradient-to-b from-red-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:white-800/30 dark:from-inherit lg:static  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30"style={{ backgroundColor: 'rgb(230, 84, 84)', color: 'white'}}>
+          <Link  href="sip:3197399411"><button style={{color:"white"}}> <Image src={"/call.svg"} alt={"llamar"} width={50} height={50}/>Llamar</button></Link>
           </p>
-        </a>
+          </div>
+        </Box>
+      </Modal>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      <div className="fixed bottom-0 right-0 p-4 m-4 bg-gray-400 text-white rounded-lg shadow-lg text-center justify-center items-center">
+    <span className='dot'></span>   Contactar Disponible <span className='dot2'></span>  Contactar por Teams
+  </div>
     </main>
   );
-}
+  }
